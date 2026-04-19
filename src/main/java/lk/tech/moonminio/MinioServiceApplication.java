@@ -1,4 +1,4 @@
-package lk.tech.minioservice;
+package lk.tech.moonminio;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

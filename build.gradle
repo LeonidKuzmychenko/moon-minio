@@ -6,7 +6,7 @@ plugins {
 
 group = 'lk.tech'
 version = '0.0.1-SNAPSHOT'
-description = 'minio-service'
+description = 'moon-minio'
 
 java {
     toolchain {
@@ -20,12 +20,12 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'io.minio:minio:8.5.17'
+
+    implementation 'io.minio:minio:8.6.0'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testCompileOnly 'org.projectlombok:lombok'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor 'org.projectlombok:lombok'
 }
 

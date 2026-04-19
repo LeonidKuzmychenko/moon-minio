@@ -1,7 +1,7 @@
-package lk.tech.minioservice.controller;
+package lk.tech.moonminio.controller;
 
-import lk.tech.minioservice.dto.TileDto;
-import lk.tech.minioservice.service.MinioService;
+import lk.tech.moonminio.dto.TileDto;
+import lk.tech.moonminio.service.MinioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;

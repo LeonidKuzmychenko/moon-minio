@@ -1,4 +1,4 @@
-package lk.tech.minioservice.dto;
+package lk.tech.moonminio.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

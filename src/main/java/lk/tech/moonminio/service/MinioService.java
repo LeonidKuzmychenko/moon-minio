@@ -1,4 +1,4 @@
-package lk.tech.minioservice.service;
+package lk.tech.moonminio.service;
 
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
