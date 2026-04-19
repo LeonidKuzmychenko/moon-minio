@@ -1,4 +1,4 @@
-package lk.tech.moonminio.dto;
+package lk.tech.moonminio.dto.tile;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

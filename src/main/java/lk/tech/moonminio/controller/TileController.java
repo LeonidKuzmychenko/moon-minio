@@ -1,7 +1,7 @@
 package lk.tech.moonminio.controller;
 
-import lk.tech.moonminio.dto.TileDto;
-import lk.tech.moonminio.service.MinioService;
+import lk.tech.moonminio.dto.tile.TileDto;
+import lk.tech.moonminio.service.MinioTilesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
@@ -12,22 +12,22 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.InputStream;
 
 @RestController
-@RequestMapping("/tile")
+@RequestMapping("api/v1/tile")
 @RequiredArgsConstructor
 public class TileController {
 
-    private final MinioService minioService;
+    private final MinioTilesService minioTilesService;
 
     @PostMapping
-    public ResponseEntity<TileDto> uploadTile(@RequestParam("file") MultipartFile file) {
-        String uuid = minioService.uploadTile(file);
+    public ResponseEntity<TileDto> uploadTile(@RequestParam("file") MultipartFile tile) {
+        String uuid = minioTilesService.uploadTile(tile);
         TileDto tileDto = new TileDto(uuid);
         return ResponseEntity.ok(tileDto);
     }
 
     @GetMapping
-    public ResponseEntity<InputStreamResource> getTile(@RequestParam("tileId") String uuid) {
-        InputStream inputStream = minioService.getTile(uuid);
+    public ResponseEntity<InputStreamResource> getTile(@RequestParam("tileId") String tileId) {
+        InputStream inputStream = minioTilesService.getTile(tileId);
         if (inputStream == null) {
             return ResponseEntity.notFound().build();
         }

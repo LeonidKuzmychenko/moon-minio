@@ -1,14 +1,8 @@
-package lk.tech.moonminio.service;
+package lk.tech.moonminio.service.parent;
 
-import io.minio.BucketExistsArgs;
-import io.minio.GetObjectArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
-import jakarta.annotation.PostConstruct;
+import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,54 +12,54 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MinioService {
+public abstract class MinioService {
 
-    private final MinioClient minioClient;
+    protected final MinioClient minioClient;
 
-    @Value("${minio.bucket}")
-    private String bucket;
-
-    @PostConstruct
-    public void init() {
+    protected void initBucket(String bucketName) {
         try {
-            boolean exists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucket).build());
-            if (!exists) {
-                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucket).build());
-                log.info("Bucket '{}' created successfully", bucket);
+            boolean bucketTilesExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            if (!bucketTilesExists) {
+                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+                log.info("Bucket '{}' created successfully", bucketName);
             }
         } catch (Exception e) {
             log.error("Error during bucket initialization", e);
         }
     }
 
-    public String uploadTile(MultipartFile file) {
+    protected String uploadFile(MultipartFile file, String bucketName) {
         String uuid = UUID.randomUUID().toString();
+        return uploadFile(file, uuid, bucketName);
+    }
+
+    protected String uploadFile(MultipartFile file, String fileName, String bucketName) {
         try (InputStream inputStream = file.getInputStream()) {
             minioClient.putObject(
                     PutObjectArgs.builder()
-                            .bucket(bucket)
-                            .object(uuid)
+                            .bucket(bucketName)
+                            .object(fileName)
                             .stream(inputStream, file.getSize(), -1)
                             .contentType(file.getContentType())
                             .build()
             );
-            return uuid;
+            return fileName;
         } catch (Exception e) {
             log.error("Error uploading file to MinIO", e);
             throw new RuntimeException("Failed to upload file to MinIO", e);
         }
     }
 
-    public InputStream getTile(String uuid) {
+    protected InputStream getFile(String id, String bucketName) {
         try {
             return minioClient.getObject(
                     GetObjectArgs.builder()
-                            .bucket(bucket)
-                            .object(uuid)
+                            .bucket(bucketName)
+                            .object(id)
                             .build()
             );
         } catch (Exception e) {
-            log.error("Error retrieving file from MinIO: {}", uuid, e);
+            log.error("Error retrieving file from MinIO: {}", id, e);
             return null;
         }
     }

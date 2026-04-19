@@ -2,13 +2,14 @@ server:
   port: 8080
 
 minio:
-  url: http://minio:9000
-  accessKey: minioadmin
-  secretKey: minioadmin
-  bucket: tiles
+  url: ${MINIO_URL}
+  accessKey: ${MINIO_ACCESS_KEY}
+  secretKey: ${MINIO_SECRET_KEY}
+  bucket-tile: tile
+  bucket-atlas: atlas
 
 spring:
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 150MB
+      max-request-size: 150MB
